@@ -1,16 +1,13 @@
-# from py_ecc.bn128 import G1, multiply, add, eq
+from python_ecdsa.elliptic_curve import EllipticCurve
 
+# This represents an elliptic curve of the form
 
-# 5 = 2 + 3
-#  print(f"py_ecc: {multiply(G1, 5 + 3)}")
+#  an elliptic curve: y^2 = x^3 + ax + b mod p
+#  a generator point
+#  curve order 
+class ECDSA():
+    def __init__(self, a, b, p, elliptic_curve, gen, c_order):
 
-
-# class ECDSA():
-#     def __init__(self, coeffs, modulus_coeffs): 
-        # self.elliptic_curve =
-        # # The coefficients of the modulus, without the leading [1]
-        # self.a_gen =
-        # # The degree of the extension field
-        # self.q_order =
-
-    # def __generate_key_pair__(self, other):
+        self.elliptic_curve = EllipticCurve(a, b, p)
+        self.gen = gen
+        self.c_order = c_order
