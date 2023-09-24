@@ -1,5 +1,8 @@
 from py_ecc.bn128 import G1, multiply, add, eq
 
+class InvalidPointError(Exception):
+    pass
+
 # This represents an elliptic curve of the form
 #  y^2 = x^3 + ax + b mod p
 class EllipticCurve():
@@ -14,14 +17,10 @@ class EllipticCurve():
         x, y = point
         return (y**2 % self.p) == (x**3 + self.a * x + self.b) % self.p
 
-
-# m = (3 * x1**2 + self.a) * pow(2 * y1, -1, self.p)
-
-
     def add(self, point1, point2):
 
         if not self.is_on_curve(point1) or not self.is_on_curve(point2):
-            return "REVERT"  # Invalid result
+            raise InvalidPointError("Invalid result")
 
         if point1 is None:
             return point2
@@ -36,7 +35,7 @@ class EllipticCurve():
             return None  # Identity element
         
         if point1 == point2:
-            m = (3 * x1**2 + self.a) * pow(2 * y1, -1, self.p)
+            return self.double(point1)
         else:
             if x1 == x2:
                 return None   # Identity element
@@ -47,11 +46,10 @@ class EllipticCurve():
 
         return (x3, y3)
     
-    
     def double(self, point):
 
         if not self.is_on_curve(point):
-            return "REVERT"  # Invalid result
+            raise InvalidPointError("Invalid result")
 
         if point is None:
             return None  # Identity element
