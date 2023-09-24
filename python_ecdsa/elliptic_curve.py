@@ -3,6 +3,9 @@ from py_ecc.bn128 import G1, multiply, add, eq
 class InvalidPointError(Exception):
     pass
 
+class InvalidScalarError(Exception):
+    pass
+
 # This represents an elliptic curve of the form
 #  y^2 = x^3 + ax + b mod p
 class EllipticCurve():
@@ -70,5 +73,27 @@ class EllipticCurve():
         return (x3, y3)
 
 
+    # Naive approach:
+    # def scalar_mul(self, point, scalar):
+    #     if scalar == 0:
+    #         raise InvalidScalarError(scalar)
+
+    #     result = None
+    #     for _ in range(scalar):  # or range(scalar % N)
+    #         result = self.add(result, point)
+    #     return result
+    
+
+    # Optimized approach using binary expansion
     def scalar_mul(self, point, scalar):
-        return multiply(point, scalar)
+        if scalar == 0:
+            raise InvalidScalarError(scalar)
+
+        current = point
+        result = None
+        while scalar:
+            if scalar & 1:  # same as scalar % 2
+                result = self.add(result, current)
+            current = self.double(current)  # point doubling
+            scalar >>= 1  # same as scalar / 2
+        return result

@@ -1,12 +1,10 @@
 from python_ecdsa.elliptic_curve import EllipticCurve
-from py_ecc.bn128 import  multiply, add, eq
+from py_ecc.bn128 import  eq
 
 def test_is_on_curve():
     ec = EllipticCurve(2, 2, 17)
     assert ec.is_on_curve((5, 1))
     assert not ec.is_on_curve((5, 3))  # A point not on the curve
-
-from py_ecc.bn128 import eq
 
 def test_add():
     # y^2 = x^3 + 2x + 2 mod 17
@@ -71,13 +69,63 @@ def test_double():
     assert result is None
 
 
+def test_scalar_multiplication():
+    # y^2 = x^3 + 2x + 2 mod 17
+    ec = EllipticCurve(2, 2, 17)
 
+    # Scalar multiplication (5,1) * 2 = (6,3)
+    point1 = (5, 1)
+    scalar = 2
+    point2 = (6, 3)
 
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point2)
 
-# def test_scalar_mul():
-#     ec = EllipticCurve(2, 2, 17)
-#     point = (5, 1)
-#     scalar = 3
-#     result = ec.scalar_mul(point, scalar)
-#     expected_result = multiply(point, scalar)
-#     assert eq(result, expected_result)
+    # Scalar multiplication (5,1) * 10 = (7,11)
+    point3 = (7, 11)
+    scalar = 10
+
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point3)
+
+    # Scalar multiplication (5,1) * 15 = (3,16)
+    point4 = (3, 16)
+    scalar = 15
+
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point4)
+
+    # Scalar multiplication (5,1) * 16 = (10,11)
+    point5 = (10, 11)
+    scalar = 16
+
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point5)
+
+    # Scalar multiplication (5,1) * 17 = (6,14)
+    point6 = (6, 14)
+    scalar = 17
+
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point6)
+
+    # Scalar multiplication (5,1) * 18 = (5,16)
+    point7 = (5, 16)
+    scalar = 18
+
+    result = ec.scalar_mul(point1, scalar)
+    assert eq(result, point7)
+
+    # Scalar multiplication (5,1) * 19 = None (Identity element)
+    scalar = 19
+
+    result = ec.scalar_mul(point1, scalar)
+    assert result is None
+
+    # Scalar multiplication (10,6) * 2 = (16,13)
+    point8 = (10, 6)
+    scalar = 2
+    point9 = (16, 13)
+
+    result = ec.scalar_mul(point8, scalar)
+    assert eq(result, point9)
