@@ -47,10 +47,30 @@ class EllipticCurve():
 
         return (x3, y3)
     
-
     
     def double(self, point):
-        return multiply(point, 2)
+
+        if not self.is_on_curve(point):
+            return "REVERT"  # Invalid result
+
+        if point is None:
+            return None  # Identity element
+
+        x1, y1 = point
+
+        if y1 == 0:
+            return None  # Identity element
+
+        # s = (3 * x1^2 + a) / (2 * y1) mod p
+        numerator = pow(x1, 2, self.p) * 3 + self.a
+        denominator = (y1 * 2) % self.p
+        s = (numerator * pow(denominator, -1, self.p)) % self.p
+
+        x3 = (pow(s, 2, self.p) - x1 - x1) % self.p
+        y3 = (s * (x1 - x3) - y1) % self.p
+
+        return (x3, y3)
+
 
     def scalar_mul(self, point, scalar):
         return multiply(point, scalar)

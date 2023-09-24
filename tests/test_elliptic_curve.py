@@ -55,14 +55,24 @@ def test_add():
     result = ec.add(point1, point2)
     assert result is None
 
-    
+def test_double():
+    # y^2 = x^3 + 2x + 2 mod 17
+    ec = EllipticCurve(2, 2, 17)
 
-# def test_double():
-#     ec = EllipticCurve(2, 2, 17)
-#     point = (5, 1)
-#     result = ec.double(point)
-#     expected_result = multiply(point, 2)
-#     assert eq(result, expected_result)
+    # (5,1) + (5,1) = 2 (5, 1) = (6,3)
+    point1 = (5, 1)
+    point3 = (6, 3)
+
+    result = ec.double(point1)
+    assert eq(result, point3)
+
+    # I + I = 2 * I = I
+    result = ec.double(None)
+    assert result is None
+
+
+
+
 
 # def test_scalar_mul():
 #     ec = EllipticCurve(2, 2, 17)
