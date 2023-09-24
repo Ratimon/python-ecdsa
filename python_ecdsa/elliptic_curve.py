@@ -9,6 +9,8 @@ class EllipticCurve():
         self.p = p
 
     def is_on_curve(self, point):
+        if point is None:
+            return True
         x, y = point
         return (y**2 % self.p) == (x**3 + self.a * x + self.b) % self.p
 
@@ -17,6 +19,10 @@ class EllipticCurve():
 
 
     def add(self, point1, point2):
+
+        if not self.is_on_curve(point1) or not self.is_on_curve(point2):
+            return "REVERT"  # Invalid result
+
         if point1 is None:
             return point2
         if point2 is None:
@@ -24,8 +30,6 @@ class EllipticCurve():
 
         x1, y1 = point1
         x2, y2 = point2
-
-
 
         # vertical
         if x1 == x2 and y1 + y2 == 0 :
