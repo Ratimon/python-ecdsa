@@ -16,8 +16,8 @@ def test_sign_verify():
     # Generate a random private key
     priv_key = ecdsa.generate_priv_key()
     # priv_key = random.randint(1, curve_order - 1)
-    priv_key = int(7) 
-    # print(priv_key)
+    # priv_key = int(8) 
+    print("priv_key=",priv_key)
 
     # Generate a public key
     public_key = ecdsa.generate_pub_key(priv_key)
@@ -34,9 +34,11 @@ def test_sign_verify():
 
     # Compute the hash of the message
     hash_value = ecdsa.generate_hash_less_than(message, ecdsa.curve_order)
+    print("hash_value_test=",hash_value)
 
     # Sign the message
     signature = ecdsa.sign(hash_value, priv_key, k_random)
+    print("signature=", signature )
 
     # Verify the signature
     is_valid = ecdsa.verify(hash_value, public_key, signature)
