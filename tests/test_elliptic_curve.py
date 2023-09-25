@@ -1,5 +1,5 @@
-from python_ecdsa.elliptic_curve import EllipticCurve
 from py_ecc.bn128 import  eq
+from python_ecdsa.elliptic_curve import EllipticCurve
 
 def test_is_on_curve():
     ec = EllipticCurve(2, 2, 17)
