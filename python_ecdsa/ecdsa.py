@@ -32,7 +32,7 @@ class ECDSA():
         return self.elliptic_curve.scalar_mul(self.gen, priv_key)
 
     def generate_random_positive_number_less_than(self, max_value):
-        return random.randint(1, max_value - 1)
+        return int(random.randint(1, max_value - 1))
     
     def sign(self, message, priv_key, k_random):
         if message >= self.curve_order:
