@@ -54,27 +54,18 @@ class ECDSA():
         raise OperationError("Result k_random * a_gen is the identity")
     
     def verify(self, hash_value, pub_key, signature):
-        # hash_value = self.generate_hash_less_than(message, self.curve_order)
-
         r, s = signature
 
         if hash_value >= self.curve_order:
             raise OperationError("Hash value >= q (EC group order)")
 
         s_inv = self.__inv_mul_prime(s, self.curve_order)
-        print("s_inv=",s_inv)
-        print("hash_value-internal=",hash_value)
-        print("curve_order=",self.curve_order)
-        # u1 = (s_inv * hash_value) % self.curve_order
         u1 = pow(s_inv * hash_value, 1,  self.curve_order)
-        print("u1=",u1)
         u2 = (s_inv * r) % self.curve_order
-        print("u2=",u2)
 
         u1a = self.elliptic_curve.scalar_mul(self.gen, u1)
-        print("u1a=",u1a)
         u2b = self.elliptic_curve.scalar_mul(pub_key, u2)
-        print("u2b=",u2b)
+        
         p = self.elliptic_curve.add(u1a, u2b)
 
         if p is not None:

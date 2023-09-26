@@ -1,5 +1,3 @@
-from py_ecc.bn128 import G1, multiply, add, eq
-
 class InvalidPointError(Exception):
     pass
 

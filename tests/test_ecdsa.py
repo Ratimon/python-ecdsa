@@ -13,37 +13,32 @@ def test_sign_verify():
 
     ecdsa = ECDSA(a, b, p, gen, curve_order)
 
+    priv_key = int(8) 
     # Generate a random private key
-    priv_key = ecdsa.generate_priv_key()
-    # priv_key = random.randint(1, curve_order - 1)
-    # priv_key = int(8) 
-    print("priv_key=",priv_key)
+    # priv_key = ecdsa.generate_priv_key()
+   
 
     # Generate a public key
     public_key = ecdsa.generate_pub_key(priv_key)
-    print(public_key)
-
     # priv_key, public_key =ecdsa.generate_key_pair()
 
+    k_random = int(18) 
     # Generate a random value for k
     # k_random = random.randint(1, curve_order - 1)
-    k_random = int(18) 
 
     # Generate a message
     message = "Bob -> 1 BTC -> Alice"
 
     # Compute the hash of the message
     hash_value = ecdsa.generate_hash_less_than(message, ecdsa.curve_order)
-    print("hash_value_test=",hash_value)
 
     # Sign the message
     signature = ecdsa.sign(hash_value, priv_key, k_random)
-    print("signature=", signature )
 
     # Verify the signature
     is_valid = ecdsa.verify(hash_value, public_key, signature)
 
-    assert is_valid == True
+    assert is_valid, "Verification should success"
 
 def test_revert_when_tempered_msg_sign_verify():
     a = 2
@@ -54,8 +49,7 @@ def test_revert_when_tempered_msg_sign_verify():
 
     ecdsa = ECDSA(a, b, p, gen, curve_order)
 
-    priv_key = int(7) 
-
+    priv_key = int(8)
     # Generate a public key (replace with your logic)
     pub_key = ecdsa.generate_pub_key(priv_key)
 
